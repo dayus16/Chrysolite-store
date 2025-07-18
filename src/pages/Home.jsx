@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../Images/Logo.png";
+import logo from "../Images/LogoImage_1.jpg";
 
 const chrysoliteItems = [
   {
@@ -191,10 +191,8 @@ const chrysoliteItems = [
 
 const Home = () => {
   return (
-    <div className="mt-10">
-      <Link to="/">
-        <img src={logo} alt="Logo" className="w-full h-75" />
-      </Link>
+    <div className="">
+      <img src={logo} alt="Logo" className="w-full h-130 hidden md:block" />
       <div className="w-full p-5 mt-10">
         <select
           id="category"

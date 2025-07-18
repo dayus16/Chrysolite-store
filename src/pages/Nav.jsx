@@ -51,7 +51,7 @@ const Nav = () => {
         </div>
 
         {/* Nav Links */}
-        <ul className="flex md:space-x-8 text-sm font-medium bg-gray-50 md:bg-transparent md:dark:bg-transparent rounded-lg md:rounded-none p-4 md:p-0">
+        <ul className="flex text-sm font-medium bg-gray-50 md:bg-transparent md:dark:bg-transparent rounded-lg md:rounded-none p-4 md:p-0">
           {/* Home Icon */}
           <li>
             <Link
