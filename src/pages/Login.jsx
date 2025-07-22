@@ -19,10 +19,10 @@ const Login = () => {
     const newErrors = {};
 
     if (!username.trim()) {
-      newErrors.username = "Email or username is required";
+      newErrors.username = "⚠ Email or username is required";
     }
     if (!password.trim()) {
-      newErrors.password = "Password is required";
+      newErrors.password = "⚠ Password is required";
     }
     setErrors(newErrors);
   };

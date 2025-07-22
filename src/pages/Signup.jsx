@@ -25,22 +25,22 @@ const Signup = () => {
     e.preventDefault();
     const newErrors = {};
     if (!fullname.trim()) {
-      newErrors.fullname = "required";
+      newErrors.fullname = "⚠ required";
     }
     if (!email.trim()) {
-      newErrors.email = "required";
+      newErrors.email = "⚠ required";
     }
     if (!username.trim()) {
-      newErrors.username = "required";
+      newErrors.username = "⚠ required";
     }
     if (!password.trim()) {
-      newErrors.password = "required";
+      newErrors.password = "⚠ required";
     }
     if (!confirmPassword.trim()) {
-      newErrors.confirmPassword = "required";
+      newErrors.confirmPassword = "⚠ required";
     }
     if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = "⚠ Passwords do not match";
     }
     setErrors(newErrors);
   };
