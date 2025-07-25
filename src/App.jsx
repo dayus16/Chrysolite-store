@@ -2,16 +2,18 @@ import { useState } from "react";
 import Nav from "./pages/nav";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Cards from "./pages/Cards";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
 import { Provider } from "react-redux";
 import { store } from "./components/store";
+import { Toaster } from "react-hot-toast";
+import Footer from "./pages/footer";
 
 const App = () => {
   const [input, setInput] = useState("");
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false} />
       <BrowserRouter>
         <Provider store={store}>
           <Nav input={input} setInput={setInput} />
@@ -21,6 +23,7 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
           </Routes>
         </Provider>
+        <Footer />
       </BrowserRouter>
     </div>
   );

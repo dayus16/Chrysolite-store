@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { IoMdCart, IoMdHome, IoMdClose, IoIosTrash } from "react-icons/io";
@@ -11,10 +11,32 @@ import {
 
 const Nav = ({ input, setInput }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // const dispatch = useDispatch();
+  const dropdownRef = useRef(); // NEW: ref for dropdown
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const menuItems = [
+    { label: "Login", path: "/login" },
+    { label: "Signup", path: "/signup" },
+    { label: "Settings", path: "/settings" },
+  ];
+
+  const logoutItem = { label: "Sign out", path: "/logout" };
+
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -34,8 +56,8 @@ const Nav = ({ input, setInput }) => {
           </span>
         </Link>
 
-        {/* Search (desktop only) */}
-        <div className="relative hidden md:block w-72">
+        {/* Search */}
+        <div className="relative hidden md:block w-full max-w-md">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
               className="w-4 h-4 text-gray-500 dark:text-gray-400"
@@ -57,103 +79,82 @@ const Nav = ({ input, setInput }) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Search..."
-            className="w-full p-2 pl-10 text-sm text-black outline-none border border-[#ff7800] rounded-lg bg-gray-50 focus:border-[#ff7800] dark:bg-gray-200 dark:border-gray-200 dark:text-black"
+            className="w-full p-2 pl-10 text-sm text-black outline-none border border-[#ff7800] rounded-lg bg-gray-200 focus:ring-2 focus:ring-[#ff7800]"
           />
         </div>
 
-        {/* Nav Links */}
-        <ul className="flex text-sm font-medium bg-gray-50 md:bg-transparent md:dark:bg-transparent rounded-lg md:rounded-none p-4 md:p-0">
+        {/* Navigation Links */}
+        <ul className="flex text-sm gap-2 font-medium bg-gray-50 md:bg-transparent md:dark:bg-transparent rounded-lg md:rounded-none p-4 md:p-0">
           {/* Home Icon */}
           <li>
             <Link
               to="/"
-              className="flex items-center justify-center gap-2 py-2 px-3 text-black"
+              className="flex items-center justify-center text-black"
               title="Home"
             >
-              <IoMdHome size={24} />
+              <IoMdHome
+                size={27}
+                className="w-9 h-9 bg-gray-300 p-2 rounded-full hover:bg-gray-400 transition"
+              />
             </Link>
           </li>
 
-          {/* Dropdown with User Icon */}
-          <li className="relative">
+          {/* User Dropdown */}
+          <li className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center justify-center gap-2 py-2 px-3 text-black"
+              className="flex items-center justify-center  text-black cursor-pointer"
               title="User Menu"
+              aria-haspopup="true"
+              aria-expanded={isDropdownOpen}
             >
-              <FaUser size={20} />
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M1 1l4 4 4-4"
-                />
-              </svg>
+              <FaUser className="w-9 h-9 bg-gray-300 p-2 rounded-full hover:bg-gray-400 transition" />
             </button>
 
-            {/* Dropdown menu */}
             {isDropdownOpen && (
               <div className="absolute mt-2 z-20 w-44 bg-white rounded-lg shadow-md dark:bg-gray-700">
                 <ul className="py-2 text-sm text-black dark:text-white">
-                  <li>
-                    <Link
-                      to="/login"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    >
-                      Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/signup"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    >
-                      Signup
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/settings"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    >
-                      Settings
-                    </Link>
-                  </li>
+                  {menuItems.map(({ label, path }) => (
+                    <li key={path}>
+                      <Link
+                        to={path}
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
                 <div className="py-1">
                   <Link
-                    to="/logout"
+                    to={logoutItem.path}
                     className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600"
                   >
-                    Sign out
+                    {logoutItem.label}
                   </Link>
                 </div>
               </div>
             )}
           </li>
-          {/* ------------Cart Icon------------ */}
 
+          {/* Cart Icon */}
           <li
-            className="relative flex items-center justify-center gap-2 py-2 px-3
-            text-black hover:text-[#ff7800] transition cursor-pointer"
+            className="relative flex items-center justify-center transition cursor-pointer"
             title="Cart"
             onClick={() => setIsCartOpen(true)}
           >
-            <IoMdCart size={28} />
+            <IoMdCart
+              size={27}
+              className="w-9 h-9 bg-gray-300 p-2 rounded-full hover:bg-gray-400 transition"
+            />
             {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#ff7800] text-white text-xs font-semibold w-5 h-5 flex items-center justify-center rounded-full shadow">
+              <span className="absolute -top-3 -right-2 bg-[#ff7800] text-white text-xs font-semibold w-5 h-5 flex items-center justify-center rounded-full shadow">
                 {itemCount}
               </span>
             )}
           </li>
 
-          {/* Cart Tab (example, you can style/position as needed) */}
+          {/* Cart Panel */}
           {isCartOpen && (
             <div className="fixed top-0 right-0 w-80 h-full bg-white shadow-lg z-50 pl-4 p-1 overflow-y-auto mt-4 rounded-l-lg">
               <div className="flex justify-between items-center pr-4 pt-4">
@@ -167,7 +168,7 @@ const Nav = ({ input, setInput }) => {
                   <IoMdClose size={25} />
                 </button>
               </div>
-              {/* Cart content goes here */}
+
               <div className="flex flex-col px-4 mt-4 space-y-4">
                 {cartItems.length === 0 ? (
                   <div className="text-center text-gray-600">
@@ -194,7 +195,6 @@ const Nav = ({ input, setInput }) => {
                             <p className="font-semibold">{item.title}</p>
                           </div>
 
-                          {/* <p className="text-sm text-gray-500">₦{item.price}</p> */}
                           <div className="flex gap-2 items-center mt-1">
                             <button
                               className="px-2 py-1 bg-gray-200 rounded text-sm cursor-pointer"
@@ -215,16 +215,18 @@ const Nav = ({ input, setInput }) => {
                             </button>
                           </div>
                         </div>
-                        <div className="space-y-3">
-                          <button
-                            className="cursor-pointer"
-                            onClick={() => dispatch(removeItem(item.id))}
-                          >
-                            <IoIosTrash size={17} />
-                          </button>
+                        <div className="flex flex-col items-center gap-2 text-gray-600">
                           <p className="font-semibold text-[#ff7800]">
                             ₦{item.price * item.quantity}
                           </p>
+
+                          <button
+                            className="cursor-pointer flex items-center"
+                            onClick={() => dispatch(removeItem(item.id))}
+                          >
+                            <IoIosTrash size={15} />
+                            Remove
+                          </button>
                         </div>
                       </div>
                     ))}

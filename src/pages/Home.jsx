@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { addToCart } from "../components/cartSlice";
-import logo from "../Images/LogoImage_1.jpg";
+import logo from "../Images/LogoImage_2.jpg";
 import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 const Home = ({ input }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -187,6 +189,11 @@ const Home = ({ input }) => {
     },
   ];
 
+  const handleAddToCart = (item) => {
+    dispatch(addToCart(item));
+    toast.success("🛒 added to cart!");
+  };
+
   const normalizedInput = input.trim().toLowerCase();
 
   const filteredItems = chrysoliteItems.filter((item) => {
@@ -207,12 +214,54 @@ const Home = ({ input }) => {
 
   return (
     <div className="p-5">
-      <img src={logo} alt="Logo" className="w-full h-130 hidden md:block" />
+      <div className="flex flex-col md:flex-row justify-evenly items-center bg-[rgba(215,215,155,255)] rounded-lg shadow-lg">
+        <motion.div
+          initial={{ opacity: 0, x: -200 }}
+          transition={{ duration: 1 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="p-8"
+        >
+          <p className="text-xl md:2xl font-semibold text-gray-800">
+            Smart Products
+          </p>
+          <h1 className="text-4xl md:text-5xl mt-2 font-bold text-gray-800">
+            Chrysolite Fragrance
+          </h1>
+          <p className="italic mt-1 font-medium text-gray-800">
+            ...Scent your way to happiness
+          </p>
+          <p className="mt-4 text-lg text-gray-700">
+            Discover luxurious fragrances for those <br /> who appreciate the
+            essence of pure delight.
+          </p>
+          <div className="mt-7">
+            <a
+              href="#items"
+              className="uppercase border py-2 px-5 text-gray-800"
+            >
+              Shop now
+            </a>
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: 200 }}
+          transition={{ duration: 1 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+        >
+          <img
+            src={logo}
+            alt="Logo"
+            className="w-full h-100 object-cover hidden md:block rounded-lg"
+          />
+        </motion.div>
+      </div>
       <div className="w-full p-5 mt-10">
         <select
           id="category"
           name="category"
-          className="border border-[#ff7800] rounded px-4 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff7800]
+          className="border border-[#ff7800] rounded px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff7800]
           "
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
@@ -224,7 +273,10 @@ const Home = ({ input }) => {
           <option value="Ear_Rings">Ear Rings</option>
         </select>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 p-5">
+      <div
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 p-5"
+        id="items"
+      >
         {filteredItems.map((items) => (
           <div
             key={items.id}
@@ -246,8 +298,8 @@ const Home = ({ input }) => {
                   })}
                 </p>
                 <button
-                  className="flex items-center gap-2 bg-[#ff7800] text-white px-3 py-1 rounded-lg cursor-pointer font-medium"
-                  onClick={() => dispatch(addToCart(items))}
+                  className="flex items-center gap-2 bg-[#ff7800] hover:bg-[#e56e00] text-white px-3 py-1 rounded-lg text-sm font-medium cursor-pointer"
+                  onClick={() => dispatch(handleAddToCart(items))}
                 >
                   Add to cart
                 </button>

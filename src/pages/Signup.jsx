@@ -82,7 +82,9 @@ const Signup = () => {
                   errors.fullname ? "border-red-500" : "border-[#ff7800]"
                 } rounded px-4 py-2 outline-none focus:ring-2 focus:ring-[#ff7800] `}
               />
-              <p className="text-red-500 text-sm">{errors.fullname}</p>
+              {errors.fullname && (
+                <p className="text-red-500 text-sm">{errors.fullname}</p>
+              )}
             </div>
 
             <div>
@@ -98,7 +100,9 @@ const Signup = () => {
                   errors.email ? "border-red-500" : "border-[#ff7800]"
                 } rounded px-4 py-2 outline-none focus:ring-2 focus:ring-[#ff7800] `}
               />
-              <p className="text-red-500 text-sm">{errors.email}</p>
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
             </div>
             <div>
               <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -113,13 +117,16 @@ const Signup = () => {
                   errors.username ? "border-red-500" : "border-[#ff7800]"
                 } rounded px-4 py-2 outline-none focus:ring-2 focus:ring-[#ff7800] `}
               />
-              <p className="text-red-500 text-sm">{errors.username}</p>
+              {errors.username && (
+                <p className="text-red-500 text-sm">{errors.username}</p>
+              )}
             </div>
 
             <div>
               <label className="block mb-1 text-sm font-medium text-gray-700">
                 Password
               </label>
+
               <div className="relative">
                 <input
                   value={password}
@@ -128,9 +135,8 @@ const Signup = () => {
                   placeholder="Enter your password"
                   className={`w-full border ${
                     errors.password ? "border-red-500" : "border-[#ff7800]"
-                  } rounded px-4 py-2 outline-none focus:ring-2 focus:ring-[#ff7800] `}
+                  } rounded px-4 py-2 outline-none focus:ring-2 focus:ring-[#ff7800]`}
                 />
-                <p className="text-red-500 text-sm">{errors.password}</p>
                 <div
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
                   onClick={togglePassword}
@@ -138,6 +144,9 @@ const Signup = () => {
                   {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                 </div>
               </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
             </div>
             <div>
               <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -155,7 +164,6 @@ const Signup = () => {
                       : "border-[#ff7800]"
                   } rounded px-4 py-2 outline-none focus:ring-2 focus:ring-[#ff7800] `}
                 />
-                <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
                 <div
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
                   onClick={toggleConfirmPassword}
@@ -163,6 +171,9 @@ const Signup = () => {
                   {showConfirmPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                 </div>
               </div>
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+              )}
             </div>
 
             <button
