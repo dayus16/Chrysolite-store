@@ -90,7 +90,7 @@ const Login = () => {
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
                   onClick={togglePassword}
                 >
-                  {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+                  {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
                 </div>
               </div>
               {errors.password && (

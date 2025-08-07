@@ -7,6 +7,7 @@ import {
   increaseQuantity,
   decreaseQuantity,
   removeItem,
+  clearCart,
 } from "../components/cartSlice";
 
 const Nav = ({ input, setInput }) => {
@@ -169,7 +170,7 @@ const Nav = ({ input, setInput }) => {
                 </button>
               </div>
 
-              <div className="flex flex-col px-4 mt-4 space-y-4">
+              <div className="flex flex-col px-4 mt-4 space-y-4 pb-4">
                 {cartItems.length === 0 ? (
                   <div className="text-center text-gray-600">
                     <IoMdCart size={40} className="mx-auto mb-2" />
@@ -217,7 +218,7 @@ const Nav = ({ input, setInput }) => {
                         </div>
                         <div className="flex flex-col items-center gap-2 text-gray-600">
                           <p className="font-semibold text-[#ff7800]">
-                            ₦{item.price * item.quantity}
+                            ₦{(item.price * item.quantity).toLocaleString()}
                           </p>
 
                           <button
@@ -242,9 +243,20 @@ const Nav = ({ input, setInput }) => {
                           )
                           .toLocaleString()}
                       </h3>
-                      <button className="bg-[#ff7800] text-white w-full py-2 rounded mt-4">
-                        Proceed to Checkout
+                      <button
+                        className="bg-[#ff7800] text-white font-bold w-full py-2 rounded mt-4 cursor-pointer hover:bg-[#e56e00]"
+                        onClick={() => dispatch(clearCart())}
+                      >
+                        Clear cart
                       </button>
+                      <Link to="/checkout">
+                        <button
+                          className="bg-[#ff7800] text-white font-bold w-full py-2 transition-transform duration-300 rounded mt-2 cursor-pointer hover:bg-[#e56e00]"
+                          onClick={() => setIsCartOpen(false)}
+                        >
+                          Proceed to Checkout
+                        </button>
+                      </Link>
                     </div>
                   </>
                 )}

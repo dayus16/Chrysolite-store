@@ -226,7 +226,7 @@ const Home = ({ input }) => {
             Smart Products
           </p>
           <h1 className="text-4xl md:text-5xl mt-2 font-bold text-gray-800">
-            Chrysolite Fragrance
+            Chrysolite <span className="text-[#ff7800]">Fragrance</span> 
           </h1>
           <p className="italic mt-1 font-medium text-gray-800">
             ...Scent your way to happiness
@@ -285,7 +285,7 @@ const Home = ({ input }) => {
             <img
               src={items.image}
               alt={items.title}
-              className="w-full h-70 object-cover hover:scale-105 rounded-t-lg transition-transform duration-300 overflow-hidden shadow-lg"
+              className="w-full h-70 object-cover hover:scale-105 rounded-t-lg transition-transform duration-500 ease-in-out overflow-hidden shadow-lg"
             />
             <div className="p-3">
               <h3 className="text-lg font-semibold">{items.title}</h3>
